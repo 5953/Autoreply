@@ -203,9 +203,9 @@ class Autoreply:
     @staticmethod
     def getreply():
         #自定义回复内容，记得修改随机数
-        reply=['感谢分享','感谢你的分享','谢谢分享','多谢分享','感谢作者的分享','谢谢坛友分享','内容精彩','的确如此','感谢分享','涨知识了','很有意思']
-        reply_m=random.randint(0,len(reply)-1)
-        reply_news=reply[reply_m]
+#         reply=['1024感谢分享','1024感谢你的分享','1024谢谢分享','1024多谢分享','1024感谢作者的分享','1024谢谢坛友分享','1024内容精彩','1024的确如此','1024感谢分享','1024涨知识了','1024很有意思']
+#         reply_m=random.randint(0,len(reply)-1)
+        reply_news="1024"
         print('本次回复消息是:'+reply_news)
         return  reply_news
 
@@ -341,7 +341,7 @@ if __name__ == "__main__":
                 if config.get('Input_self',False):
                     vercode = input('请手动输入验证码:')
                 else:
-                    vercode = GetVerificationCode.apitruecaptcha()
+                    vercode = GetVerificationCode.ttshitu()
                 print('输入的验证码为:'+vercode)
                 while auto.inputvercode(vercode)=='验证码不正确，请重新输入':
                     print('验证码不正确，请重新输入')
@@ -349,7 +349,7 @@ if __name__ == "__main__":
                     if config.get('Input_self',False):
                         vercode=input('请手动输入验证码:')
                     else:
-                        vercode = GetVerificationCode.apitruecaptcha()
+                        vercode = GetVerificationCode.ttshitu()
                     print('输入的验证码为:'+vercode)
                 if auto.login1()=='賬號已開啟兩步驗證':
                     if auto.login2()=='已經順利登錄':
