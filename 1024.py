@@ -62,7 +62,7 @@ class Autoreply:
 
     def login2(self):
         sleep(2)
-        my_token = self.secret
+        my_token =otp.get_totp(self.secret)
         data={
         'step': '2',
         'cktime': '0',
