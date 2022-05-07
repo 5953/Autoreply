@@ -123,36 +123,52 @@ class Autoreply:
             return Err
 
     def gettodaylist(self):
-        black_list = []
+                black_list = []
         pat = ('htm_data/\w+/\w+/\w+.html')
-        con = self.s.get(self.url, headers=self.headers)
-        con = con.content.decode('utf-8', 'ignore')
-        self.web_page = con
+        # con = requests.get(url, headers=headers,params=prams)
+        head = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"}
+        # 头部请求 通过 header 伪装成浏览器
+        request = urllib.request.Request(url, headers=head, )  # method="get"
+        # 把请求的信息通过urllib Request 封装给 自定义变量request 可以添加参数 method 默认get也可以post
+        # print(resqust)
+        response = urllib.request.urlopen(request)
+        # 通过urlopen访问变量requst 并返回给 自定义参数
+        con = response.read().decode("utf-8")
+        # print(con)
+        web_page = con
         theme = con.find('普通主題')
-
+        #
         match = re.findall(pat, con[theme:])
-        self.match = match
-        if config.get('Forbid', False):
-            remove_list = []
-            self.getModerator()
-            content = con[theme:]
-            pat = 'class="bl">(.*)?</a>'
-            all_user = re.findall(pat, content)
-            pat = '<h3><a href="([\s\S]*?)"'
-            self.match = re.findall(pat, content)
-            print('帖子数量为:' + str(len(all_user)))
-            if len(all_user) != len(self.match):
-                print('移除版主列表功能失效，请重试或者联系开发者更新')
-                os._exit(0)
-            for i in range(len(all_user)):
-                if all_user[i] in self.moderator_list:
-                    remove_list.append(self.match[i])
-            for data in remove_list:
-                print('移除的版主帖子为:' + data)
-                self.match.remove(data)
-            print('版主帖子移除完毕')
-        # today=match
-        return self.match
+        # self.match = match
+
+        remove_list = []
+
+        moderator = web_page.find('版主')
+        moderator = web_page[moderator:moderator + 800]
+        pat = 'username=(\w+)'
+        moderator_list = re.findall(pat, moderator)
+        print('版主列表:' + ','.join(moderator_list))
+        moderator_list = moderator_list
+
+        content = con[theme:]
+        pat = 'class="bl">(.*)?</a>'
+        all_user = re.findall(pat, content)
+        pat = '<h3><a href="([\s\S]*?)"'
+        match = re.findall(pat, content)
+        print('帖子数量为:' + str(len(all_user)))
+        if len(all_user) != len(match):
+            print('移除版主列表功能失效，请重试或者联系开发者更新')
+            os._exit(0)
+        for i in range(len(all_user)):
+            if all_user[i] in moderator_list:
+                remove_list.append(match[i])
+        for data in remove_list:
+            print('移除的版主帖子为:' + data)
+            match.remove(data)
+        print('版主帖子移除完毕')
+        return match
+
 
     def getModerator(self):
         moderator = self.web_page.find('版主')
