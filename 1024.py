@@ -243,7 +243,7 @@ def main(cookies, todaylist,rcookies):
             print('账号回复失败，重试')
             sleep(60)
             pass
-    n = getnumber()
+    n = getnumber(cookies)
     print('账号开始时发表帖子:' + m)
     print('账号结束时发表帖子:' + n)
     print('账号回复' + str(int(n) - int(m)) + '次')
