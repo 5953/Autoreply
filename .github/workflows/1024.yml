@@ -29,6 +29,8 @@ jobs:
     - name: run 1024.py
       env:
         USER: ${{ secrets.USER }}
+        RCOOKIE: ${{ secrets.RCOOKIE }}
+        COOKIE: ${{ secrets.COOKIE }}
         PASSWORD: ${{ secrets.PASSWORD }}
         SECRET: ${{ secrets.SECRET }}
         TOKER: ${{ secrets.TOKER }}
